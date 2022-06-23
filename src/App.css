@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+*{
+  margin:0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+body{
+  background-color: #292f36;
+  overflow-x: hidden;
+}
+
+.gradient{
+  background: linear-gradient(78deg, #ff1b6b, #45caff, #f4f269);
+background-size: 600% 600%;
+
+-webkit-animation: AnimationName 10s ease infinite;
+-moz-animation: AnimationName 10s ease infinite;
+animation: AnimationName 10s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+0%{background-position:0% 41%}
+50%{background-position:100% 60%}
+100%{background-position:0% 41%}
+}
+@-moz-keyframes AnimationName {
+0%{background-position:0% 41%}
+50%{background-position:100% 60%}
+100%{background-position:0% 41%}
+}
+@keyframes AnimationName {
+0%{background-position:0% 41%}
+50%{background-position:100% 60%}
+100%{background-position:0% 41%}
+}
+
+.welcome{
+  background: linear-gradient(78deg, #ff1b6b, #45caff, #f4f269);
+background-size: 600% 600%;
+
+-webkit-animation: AnimationName 10s ease infinite;
+-moz-animation: AnimationName 10s ease infinite;
+animation: AnimationName 10s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
