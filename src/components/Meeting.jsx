@@ -9,9 +9,9 @@ import { CgScreen } from "react-icons/cg";
 
 const Meeting = () => {
   return (
-    <div className="w-screen  min-h-max h-screen  bg-amel">
-      <h2 className="px-7 py-4 text-3xl font-bold welcome">Zuun</h2>
-      <div className="mx-auto w-4/5  flex  rounded-md h-5/6">
+    <div className="w-screen  min-h-max h-screen py-5 bg-amel">
+      {/* <h2 className="px-7 py-4 text-3xl font-bold welcome">Zuun</h2> */}
+      <div className="mx-auto w-4/5  flex  rounded-md h-full  ">
         <div className="meet px-3 py-5 bg-gray-900 rounded-md relative grow min-h-max">
           <div className="flex text-gray-400 cursor-pointer justify-between">
             <div className="border border-gray-400 flex items-center p-1 rounded-md">
@@ -25,7 +25,7 @@ const Meeting = () => {
             </div>
           </div>
           <div className="mt-2 bg-gray-400 text-gray-400 w-full h-px"></div>
-          <div className=" p-3   h-full">
+          <div className=" p-3 pb-0   h-full">
             <div className=" flex lg:flex-row flex-col h-4/5">
               <div className="you  flex items-center justify-center bg-amel border rounded-md border-green-400 lg:w-1/2 h-1/2 lg:h-full">
                 <div className="rounded ">
@@ -54,7 +54,7 @@ const Meeting = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-0 h-[60px] rounded-br-none mt-5 w-full left-0 gradient rounded-md flex items-center justify-center">
+            <div className="absolute bottom-0 h-[60px] rounded-br-none w-full left-0 gradient rounded-md flex items-center justify-center">
               <div className="p-3 bg-gray-500/50 rounded-md cursor-pointer">
                 <AiOutlineAudio />
               </div>
