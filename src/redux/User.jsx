@@ -8,6 +8,9 @@ const userSlice = createSlice({
     name: null,
     meetingid: null,
     token: null,
+    audio: false,
+    video: false,
+    screenshare: false,
   },
   reducers: {
     setUser: (state, action) => {
@@ -16,6 +19,10 @@ const userSlice = createSlice({
       state.profile = action.payload.profile;
       state.meetingid = action.payload.meetingid;
       state.token = action.payload.token;
+    },
+    setControls: (state, action) => {
+      state.audio = action.payload.audio;
+      state.video = action.payload.video;
     },
     logoutUser: (state, action) => {
       state.email = null;
@@ -27,5 +34,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, setControls } = userSlice.actions;
 export default userSlice.reducer;

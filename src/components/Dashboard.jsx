@@ -1,11 +1,29 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Setting from "./Setting";
+import { SocketContext } from "../socket/socket";
+import { useNavigate } from "react-router-dom";
+import { setControls } from "../redux/User";
 
 const Dashboard = () => {
   let user = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
   const [popup, setPopup] = useState(false);
   const [start, setStart] = useState(true);
+  const socket = useContext(SocketContext);
+  const navigate = useNavigate();
+
+  const createRoom = (mic, camera) => {
+    socket.emit("addRoom", user?.meetingid);
+    dispatch(setControls({ audio: mic, video: camera }));
+    navigate(`/meeting/${user?.meetingid}`);
+  };
+
+  const saveSetting = (mic, camera) => {
+    dispatch(setControls({ audio: mic, video: camera }));
+    setPopup(false);
+  };
 
   const startHandler = () => {
     setStart(true);
@@ -79,7 +97,12 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
-      <Setting open={popup} change={setPopup} start={start} />
+      <Setting
+        open={popup}
+        saveSetting={saveSetting}
+        start={start}
+        create={createRoom}
+      />
     </div>
   );
 };

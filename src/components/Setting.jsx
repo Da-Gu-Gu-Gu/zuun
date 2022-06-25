@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
-const Setting = ({ open, change, start }) => {
+const Setting = ({ open, create, saveSetting, start }) => {
   const [audiochecked, setAudioChecked] = useState(true);
   const [videochecked, setVideoChecked] = useState(true);
 
@@ -15,7 +15,7 @@ const Setting = ({ open, change, start }) => {
         <p className="text-gray-300 font-bold">Setting</p>
         <p
           className="text-gray-300 font-bold text-lg cursor-pointer"
-          onClick={() => change(false)}
+          onClick={() => saveSetting(audiochecked, videochecked)}
         >
           <IoIosCloseCircleOutline />
         </p>
@@ -50,7 +50,11 @@ const Setting = ({ open, change, start }) => {
       </div>
 
       <div
-        onClick={() => change(false)}
+        onClick={() =>
+          start
+            ? create(audiochecked, videochecked)
+            : saveSetting(audiochecked, videochecked)
+        }
         className="w-full cursor-pointer mt-3 h-[40px] flex items-center rounded-md justify-center bg-primary text-white"
       >
         <p>{start ? "Start" : "Save"}</p>
