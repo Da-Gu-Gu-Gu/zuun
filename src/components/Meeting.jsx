@@ -27,7 +27,7 @@ const Meeting = () => {
           <div className="mt-2 bg-gray-400 text-gray-400 w-full h-px"></div>
           <div className=" p-3 pb-0   h-full">
             <div className=" flex lg:flex-row flex-col h-4/5">
-              <div className="you  flex items-center justify-center bg-amel border rounded-md border-green-400 lg:w-1/2 h-1/2 lg:h-full">
+              <div className="you  flex items-center justify-center bg-amel border rounded-md border-primary lg:w-1/2 h-1/2 lg:h-full">
                 <div className="rounded ">
                   <img
                     src="https://api.multiavatar.com/df.png"
@@ -77,7 +77,7 @@ const Meeting = () => {
           </p>
           <p className=" text-white ml-4 font-bold">Chat</p>
           <div className="me flex w-4/5  justify-end rounded-md mr-3 float-right  my-3">
-            <p className="float-right bg-violet-900 text-white p-2 rounded-md ">
+            <p className="float-right bg-primary text-white p-2 rounded-md ">
               Hi
             </p>
           </div>
@@ -100,7 +100,7 @@ const Meeting = () => {
               className="bg-gray-500 h-[40px] p-3 border-none outline-none text-white w-3/4"
               placeholder="Aa"
             />
-            <div className="h-[40px] leading-[40px] text-center  bg-violet-700 text-white w-1/4">
+            <div className="h-[40px] leading-[40px] text-center  bg-primary text-white w-1/4">
               Send
             </div>
           </div>

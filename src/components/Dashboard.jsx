@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Setting from "./Setting";
 
 const Dashboard = () => {
   let user = useSelector((state) => state.user);
+  const [popup, setPopup] = useState(false);
+  const [start, setStart] = useState(true);
+
+  const startHandler = () => {
+    setStart(true);
+    setPopup(true);
+  };
+
+  const settignHandler = () => {
+    setStart(false);
+    setPopup(true);
+  };
 
   return (
-    <div className="w-screen h-screen bg-amel pt-5">
+    <div className="w-screen h-screen bg-amel pt-5 relative">
       <div className="mx-auto lg:w-3/5  w-4/5  ">
         <h2 className="welcome text-3xl font-extrabold">Zuun</h2>
         <img
@@ -23,10 +36,16 @@ const Dashboard = () => {
             {user?.meetingid ? user.meetingid : "123 123 123"}
           </h1>
           <div className="flex  justify-between w-max">
-            <div className="bg-gray-800 rounded-md py-2 px-5 cursor-pointer">
+            <div
+              className="bg-gray-800 rounded-md py-2 px-5 cursor-pointer"
+              onClick={startHandler}
+            >
               <p className="text-white text-center">Start</p>
             </div>
-            <div className="bg-gray-800 rounded-md py-2 px-5 ml-4 cursor-pointer">
+            <div
+              onClick={() => settignHandler()}
+              className="bg-gray-800 rounded-md py-2 px-5 ml-4 cursor-pointer"
+            >
               <p className="text-white text-center">Setting</p>
             </div>
           </div>
@@ -60,6 +79,7 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
+      <Setting open={popup} change={setPopup} start={start} />
     </div>
   );
 };

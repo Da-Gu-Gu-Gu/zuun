@@ -46,10 +46,38 @@ const Google = ({ login }) => {
     });
   };
 
+  const LoginwithGoogle = async () => {
+    await signInWithPopup(auth, provider).then((res) => {
+      console.log(res.user.displayName, res.user.photoURL);
+      axios
+        .post(`${process.env.REACT_APP_API}/user/signin`, {
+          email: res.user.email,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.err) {
+            alert("User not found");
+          } else {
+            dispatch(
+              setUser({
+                email: res.data.user.email,
+                name: res.data.user.name,
+                profile: res.data.user.profile,
+                meetingid: res.data.user.meetingid,
+                token: res.data.token,
+              })
+            );
+            navigate("/me");
+          }
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
   return (
     <div
       className="flex mt-5 mb-2 bg-blue-700 items-center rounded-md"
-      onClick={SignUpwithGoogle}
+      onClick={login ? LoginwithGoogle : SignUpwithGoogle}
     >
       <div className="icon bg-white dark:bg-white p-3 rounded-md">
         <FcGoogle />
