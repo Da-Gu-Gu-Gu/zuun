@@ -10,28 +10,85 @@ import { IoVideocamOffOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setControls } from "../redux/User";
+import { useParams } from "react-router-dom";
+import { SocketContext } from "../socket/socket";
+import { useContext } from "react";
+import Peer from "simple-peer";
 
 const Meeting = () => {
   const user = useSelector((state) => state.user);
+
+  const { token } = useParams();
+
+  const socket = useContext(SocketContext);
+
   const disptach = useDispatch();
   const [stream, setStream] = useState();
 
   const myVideo = useRef();
+  const otherVideo = useRef();
+
+  const [other, setOther] = useState();
 
   useEffect(() => {
-    if (user?.audio && user?.video) {
-      navigator.mediaDevices
-        .getUserMedia({
-          video: user?.video,
-          audio: user?.audio,
-        })
-        .then((currentStream) => {
-          setStream(currentStream);
-          myVideo.current.srcObject = currentStream;
-        });
-    }
-    console.log(user?.video);
+    socket.emit("entermeetingroom", {
+      roomid: Number(token),
+      sender: user,
+    });
+    socket.on(`getMessage${Number(token)}`, (data) => {
+      console.log(data);
+      if (Number(token) === user?.meetingid) {
+        if (data?.sender.meetingid !== Number(token)) {
+          setOther(data.sender);
+        }
+      }
+      if (Number(token) !== user?.meetingid) {
+        if (data?.sender.meetingid === Number(token)) {
+          setOther(data.sender);
+        }
+      }
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: user?.video,
+        audio: user?.audio,
+      })
+      .then((currentStream) => {
+        setStream(currentStream);
+        myVideo.current.srcObject = currentStream;
+        videoshare(currentStream);
+      });
+    socket.emit("entermeetingroom", {
+      roomid: Number(token),
+      sender: user,
+    });
   }, [user?.audio, user?.video]);
+
+  const videoshare = (x) => {
+    console.log("hahah");
+    console.log(x);
+    let peer = new Peer({
+      initiator: true,
+      stream: x,
+    });
+    peer.on("signal", (data) => {
+      console.log(data);
+      socket.emit("video", { user: user, signal: data });
+    });
+
+    socket.on(`video${user?.email}`, (data) => {
+      console.log(data);
+      peer.signal(data);
+    });
+
+    peer.on("stream", (stream) => {
+      console.log(stream);
+      otherVideo.current.srcObject = stream;
+    });
+  };
 
   return (
     <div className="w-screen  min-h-max h-screen py-5 bg-amel">
@@ -75,21 +132,41 @@ const Meeting = () => {
                   </div>
                 )}
               </div>
-              <div className="  flex items-center relative justify-center bg-amel lg:w-1/2 h-1/2 lg:h-full">
-                <div className="rounded ">
-                  <img
-                    src="https://api.multiavatar.com/gg.png"
-                    alt="profile"
-                    className="w-[50px] h-[50px] rounded-md bg-gray-600 mx-auto my-3"
-                  />
-                  <p className="text-center text-2xl text-white">Da Gu Gu Gu</p>
-                </div>
-                <div className="flex absolute bottom-0 left-1 items-center pb-1">
-                  <div className=" text-[15px] p-3 bg-gray-900 text-white rounded-md ">
-                    <AiOutlineAudio />
+              {other && (
+                <div className="other  flex items-center relative justify-center bg-amel lg:w-1/2 h-1/2 lg:h-full">
+                  {other?.video ? (
+                    <video
+                      playsInline
+                      ref={otherVideo}
+                      autoPlay
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    <div className="rounded ">
+                      <img
+                        src={
+                          other?.profile
+                            ? other.profile
+                            : "https://api.multiavatar.com/df.png"
+                        }
+                        className="w-[50px] h-[50px] rounded-md bg-gray-600 mx-auto my-3"
+                      />
+                      <p className="text-center text-2xl text-white">
+                        {other?.name}
+                      </p>
+                    </div>
+                  )}
+                  <div className="flex absolute bottom-0 left-1 items-center pb-1">
+                    <div className=" text-[15px] p-3 bg-gray-900 text-white rounded-md ">
+                      {other?.audio ? (
+                        <AiOutlineAudio />
+                      ) : (
+                        <AiOutlineAudioMuted />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="absolute bottom-0 h-[60px] rounded-br-none w-full left-0 gradient rounded-md flex items-center justify-center">
